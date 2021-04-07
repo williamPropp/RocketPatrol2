@@ -7,5 +7,7 @@ let config = {
 
 let game = new Phaser.Game();
 
+let borderUISize = game.config.height / 15;
+let borderPadding = borderUISize / 15;
 
 // python -m http.server
