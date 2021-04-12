@@ -32,9 +32,9 @@ class Play extends Phaser.Scene {
         this.p1Rocket = new Rocket(this, game.config.width/2, 431, 'rocket').setOrigin(0.5, 0);
 
         this.ship1 = new Ship(this, 100, 120, 'spaceship', 0, 1).setOrigin(0,0);
-        this.ship2 = new Ship(this, 200, 200, 'spaceship', 0, 1).setOrigin(0,0);
-        this.ship3 = new Ship(this, 300, 240, 'spaceship', 0, 1).setOrigin(0,0);
-        this.ship4 = new Ship(this, 400, 580, 'spaceship', 0, 1).setOrigin(0,0);
+        this.ship2 = new Ship(this, 300, 200, 'spaceship', 0, 1).setOrigin(0,0);
+        this.ship3 = new Ship(this, 200, 240, 'spaceship', 0, 1).setOrigin(0,0);
+        this.ship4 = new Ship(this, 400, 300, 'spaceship', 0, 1).setOrigin(0,0);
 
         //Green UI background
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
