@@ -56,7 +56,7 @@ class Play extends Phaser.Scene {
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
 
-        // 30-second play clock
+        //30 seconds to play
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(30000, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
@@ -68,10 +68,9 @@ class Play extends Phaser.Scene {
 
     update() {
 
-        this.starfield.tilePositionX -= 4;
-
         //Play game, unless gameOver = true
         if(!this.gameOver) {
+            this.starfield.tilePositionX -= 4;
             this.p1Rocket.update();
             this.ship1.update();
             this.ship2.update();
