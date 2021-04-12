@@ -13,6 +13,3 @@ let borderPadding = borderUISize / 3;
 
 //Reserve keyboard vars
 let keyF, keyR, keyLEFT, keyRIGHT;
-
-
-console.log("hello from main.js");

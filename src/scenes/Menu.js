@@ -1,12 +1,12 @@
 class Menu extends Phaser.Scene {
     constructor() {
         super("menuScene");
-        console.log("menu scene created.");
+
     }
 
     create() {
-        console.log("hello from Menu.js");
 
+        //Define Keys
         this.keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
         //White Borders

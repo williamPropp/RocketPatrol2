@@ -1,9 +1,7 @@
-console.log("hello from play.js");
-
 class Play extends Phaser.Scene {
     constructor() {
         super("playScene");
-        console.log("play scene created.");
+
 
     }
 
