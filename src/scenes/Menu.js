@@ -1,7 +1,9 @@
+console.log("hello from menu.js");
+
 class Menu extends Phaser.Scene {
     constructor() {
         super("menuScene");
-
+        console.log("menu scene created.");
     }
 
     create() {
