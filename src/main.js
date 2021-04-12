@@ -7,9 +7,12 @@ let config = {
 
 let game = new Phaser.Game(config);
 
+//Declare global size variables
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
 
-console.log("hello from main.js");
+//Reserve keyboard vars
+let keyF, keyR, keyLEFT, keyRIGHT;
 
-// python -m http.server
+
+console.log("hello from main.js");
