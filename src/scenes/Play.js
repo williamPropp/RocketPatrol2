@@ -56,9 +56,9 @@ class Play extends Phaser.Scene {
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
 
-        //30 seconds to play
+        //60 seconds to play
         scoreConfig.fixedWidth = 0;
-        this.clock = this.time.delayedCall(30000, () => {
+        this.clock = this.time.delayedCall(60000, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 64, '(R)estart', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
