@@ -14,6 +14,15 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
+    genVirusName() {
+        let fileName = ['sus', 'sketchy', 'malware', 'spyware', 'adware', 'secretSHHH', 'coinMiner', 'unAuth', 'evil', 'adminREAL', 'delsys32', 'legit', 'important', 'doNotDelete'];
+        let fileExt = ['.pip', '.exe', '.vbs', '.xls', '.rtf', '.zip', '.jar'];
+        let nameIndex = Math.floor(Math.random()*fileName.length);
+        let extIndex = Math.floor(Math.random()*fileExt.length);
+        let virusName = fileName[nameIndex]+fileExt[extIndex];
+        return virusName;
+    }
+
     create() {
 
         //Initialize gameOver state and score
@@ -26,9 +35,21 @@ class Play extends Phaser.Scene {
         //Starfield
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
 
-        //Create rocket and ships
+        //Create rocket
         this.p1Rocket = new Rocket(this, game.config.width/2, 431, 'rocket').setOrigin(0.5, 0);
 
+        /*//Virus text config
+        let nShipName = ['warn0','warn1','warn2'];
+
+        for(let i = 0; i < nShipName.length; i++) {
+            console.log(i);
+            nShipName[i] = this.genVirusName();
+            console.log(nShipName[i]);
+        }
+
+        let virusTextConfig = { fontFamily: 'Courier', fontSize: '10px', backgroundColor: '#000000', color: '#000000', align: 'center', padding: { top: 5, bottom: 5 } };*/
+
+        //Create Ships
         this.ship1 = new Ship(this, 100, 120, 'spaceship', 0, 1).setOrigin(0,0);
         this.ship2 = new Ship(this, 300, 200, 'spaceship', 0, 1).setOrigin(0,0);
         this.ship3 = new Ship(this, 200, 240, 'spaceship', 0, 1).setOrigin(0,0);
