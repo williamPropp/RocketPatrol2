@@ -14,9 +14,19 @@ class Play extends Phaser.Scene {
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
+    genVirusName() {
+        let fileName = ['sus', 'sketchy', 'malware', 'spyware', 'adware', 'secretSHHH', 'coinMiner', 'unAuth', 'evil', 'adminREAL', 'delsys32', 'legit', 'important', 'doNotDelete'];
+        let fileExt = ['.pip', '.exe', '.vbs', '.xls', '.rtf', '.zip', '.jar'];
+        let nameIndex = Math.floor(Math.random()*fileName.length);
+        let extIndex = Math.floor(Math.random()*fileExt.length);
+        let virusName = fileName[nameIndex]+fileExt[extIndex];
+        console.log('genVirusName() generated name');
+        return virusName;
+    }
+
     create() {
 
-        //Initialize gameOver state and score
+        //Initialize gameOver state, score, and timer
         this.gameOver = false;
         this.p1Score = 0;
 
@@ -29,10 +39,11 @@ class Play extends Phaser.Scene {
         //Create rocket and ships
         this.p1Rocket = new Rocket(this, game.config.width/2, 431, 'rocket').setOrigin(0.5, 0);
 
-        this.ship1 = new Ship(this, 100, 120, 'spaceship', 0, 1).setOrigin(0,0);
-        this.ship2 = new Ship(this, 300, 200, 'spaceship', 0, 1).setOrigin(0,0);
-        this.ship3 = new Ship(this, 200, 240, 'spaceship', 0, 1).setOrigin(0,0);
-        this.ship4 = new Ship(this, 400, 300, 'spaceship', 0, 1).setOrigin(0,0);
+        //Generate ships
+        this.ship1 = new Ship(this, 100, 120, 'spaceship', 0, 1, this.genVirusName()).setOrigin(0,0);
+        this.ship2 = new Ship(this, 300, 200, 'spaceship', 0, 1, this.genVirusName()).setOrigin(0,0);
+        this.ship3 = new Ship(this, 200, 240, 'spaceship', 0, 1, this.genVirusName()).setOrigin(0,0);
+        this.ship4 = new Ship(this, 400, 300, 'spaceship', 0, 1, this.genVirusName()).setOrigin(0,0);
 
         //Green UI background
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
@@ -53,7 +64,6 @@ class Play extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-
         //60 seconds to play
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(60000, () => {
@@ -68,12 +78,25 @@ class Play extends Phaser.Scene {
 
         //Play game, unless gameOver = true
         if(!this.gameOver) {
+
             this.starfield.tilePositionX -= 4;
             this.p1Rocket.update();
+
+            /*this.ship1text.x -= 3;
+            this.ship2text.x -= 3;
+            this.ship3text.x -= 3;
+            this.ship4text.x -= 3;*/
+
+            /*if(this.ship1text.x - this.ship1text.width) {
+                this.ship1text.x = game.config.width;
+            }*/
+    
+
             this.ship1.update();
             this.ship2.update();
             this.ship3.update();
             this.ship4.update();
+            
         }
 
         //Restart game when 'R' is pressed
@@ -97,14 +120,18 @@ class Play extends Phaser.Scene {
     destroyShip(ship) {
         this.sound.play('sfx_explosion');
         ship.alpha = 0;
+        ship.nameText.alpha = 0;
         let boom = this.add.sprite(ship.x, ship.y, 'explosion');
         boom.anims.play('explode');
         boom.on('animationcomplete', () => {
             ship.reset();
             ship.alpha = 1;
+            ship.nameText.alpha = 1;
             boom.destroy();
         });
+
         this.p1Score += ship.pointValue;
         this.scoreLeft.setText(this.p1Score);
+
     }
 }
