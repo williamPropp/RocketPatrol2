@@ -11,7 +11,15 @@ let game = new Phaser.Game(config);
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize / 3;
 
+//Declare other global variables
+let highScore = 0;
+
 //Reserve keyboard vars
 let keyF, keyR, keyLEFT, keyRIGHT;
 
-//just testing a change
+/*
+Assets Used:
+Sci-fi Texture: https://www.freepik.com/premium-vector/circuit-board-vector-seamless-texture-sci-fi-electronic-background_4080063.htm
+click sounds: https://freesound.org/people/joebro10/sounds/219318/
+
+*/
