@@ -11,17 +11,7 @@ class Play extends Phaser.Scene {
         this.load.image('starfield', './assets/starfield.png');
         this.load.audio('sfx_explosion', './assets/explosion38.wav');
         this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
-    }
-
-    genVirusName() {
-        let fileName = ['sus', 'sketchy', 'malware', 'spyware', 'adware', 'secretSHHH', 'coinMiner', 'unAuth', 'evil', 'adminREAL', 'delsys32', 'legit', 'important', 'doNotDelete'];
-        let fileExt = ['.pip', '.exe', '.vbs', '.xls', '.rtf', '.zip', '.jar'];
-        let nameIndex = Math.floor(Math.random()*fileName.length);
-        let extIndex = Math.floor(Math.random()*fileExt.length);
-        let virusName = fileName[nameIndex]+fileExt[extIndex];
-        console.log('genVirusName() generated name');
-        return virusName;
+        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 57, frameHeight: 80, startFrame: 0, endFrame: 11});
     }
 
     create() {
@@ -31,28 +21,27 @@ class Play extends Phaser.Scene {
         this.p1Score = 0;
 
         //Create explosion animation
-        this.anims.create({ key: 'explode', frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}), frameRate: 30 });
+        this.anims.create({ key: 'explode', frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 11, first: 0}), frameRate: 25 });
 
         //Starfield
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
 
         //Create rocket and ships
-        this.p1Rocket = new Rocket(this, game.config.width/2, 431, 'rocket').setOrigin(0.5, 0);
+        this.p1Rocket = new Rocket(this, game.config.width/2, 420, 'rocket').setOrigin(0.5, 0);
 
         //Generate ships
-        this.ship1 = new Ship(this, 100, 120, 'spaceship', 0, 1, this.genVirusName()).setOrigin(0,0);
-        this.ship2 = new Ship(this, 300, 200, 'spaceship', 0, 1, this.genVirusName()).setOrigin(0,0);
-        this.ship3 = new Ship(this, 200, 240, 'spaceship', 0, 1, this.genVirusName()).setOrigin(0,0);
-        this.ship4 = new Ship(this, 400, 300, 'spaceship', 0, 1, this.genVirusName()).setOrigin(0,0);
+        this.ship1 = new Ship(this, 100, 145, 'spaceship', 0, 1).setOrigin(0,0);
+        this.ship2 = new Ship(this, 300, 200, 'spaceship', 0, 1).setOrigin(0,0);
+        this.ship3 = new Ship(this, 200, 260, 'spaceship', 0, 1).setOrigin(0,0);
 
         //Green UI background
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
 
         //White Borders
-	    this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
-	    this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
-	    this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
-	    this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
+	    this.add.rectangle(0, 0, game.config.width, borderUISize, 0xF5F5DC).setOrigin(0 ,0);
+	    this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xF5F5DC).setOrigin(0 ,0);
+	    this.add.rectangle(0, 0, borderUISize, game.config.height, 0xF5F5DC).setOrigin(0 ,0);
+	    this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xF5F5DC).setOrigin(0 ,0);
 
         //Display score
         let scoreConfig = { fontFamily: 'Courier', fontSize: '28px', backgroundColor: '#F3B141', color: '#843605', align: 'right', padding: { top: 5, bottom: 5 }, fixedWidth: 100 };
@@ -95,7 +84,6 @@ class Play extends Phaser.Scene {
             this.ship1.update();
             this.ship2.update();
             this.ship3.update();
-            this.ship4.update();
             
         }
 
@@ -106,7 +94,7 @@ class Play extends Phaser.Scene {
 
         //Rocket collision
         let r = this.p1Rocket;
-        for(let s of [this.ship1, this.ship2, this.ship3, this.ship4]) {
+        for(let s of [this.ship1, this.ship2, this.ship3]) {
             if(r.x < s.x + s.width &&
                r.x + r.width > s.x &&
                r.y < s.y + s.height &&

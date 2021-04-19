@@ -53,7 +53,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
     reset() {
 
         //Return rocket to start on reset
-        this.y = this.y = game.config.height - borderUISize - borderPadding;
+        this.y = game.config.height - borderUISize - (3*borderPadding);
         this.isFiring = false;
         this.isPlayed = false;
     }

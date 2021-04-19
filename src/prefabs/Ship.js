@@ -4,10 +4,8 @@ class Ship extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
         this.pointValue = pointValue;
         this.name = name;
-        this.virusTextConfig = { fontFamily: 'Courier', fontSize: '10px', backgroundColor: '#000000', color: '#FFFFFF', align: 'center', padding: { top: 5, bottom: 5 } };
-        this.nameText = scene.add.text(this.x, this.y+35, this.name, this.virusTextConfig);
-
-        console.log(this.name);
+        this.virusTextConfig = { fontFamily: 'Courier', fontSize: '10px', backgroundColor: '#FFFFFF00', color: '#FFFFFF', align: 'CENTER', padding: { top: 5, bottom: 5 } };
+        this.nameText = scene.add.text(this.x, this.y+45, this.genVirusName(), this.virusTextConfig);
     }
 
     genVirusName() {
@@ -16,12 +14,13 @@ class Ship extends Phaser.GameObjects.Sprite {
         let nameIndex = Math.floor(Math.random()*fileName.length);
         let extIndex = Math.floor(Math.random()*fileExt.length);
         let virusName = fileName[nameIndex]+fileExt[extIndex];
+        console.log('genVirusName() made: '+virusName);
         return virusName;
     }
 
     update() {
 
-        //Move ships across screen
+        //Move ships and ships text across screen
         this.x -= 3;
         this.nameText.x -= 3;
         if(this.x < 0 - this.width) {
@@ -30,9 +29,6 @@ class Ship extends Phaser.GameObjects.Sprite {
         if(this.nameText.x < 0 - this.width) {
             this.nameText.x = game.config.width;
         }
-
-        //let virusTextConfig = { fontFamily: 'Courier', fontSize: '10px', backgroundColor: '#000000', color: '#000000', align: 'center', padding: { top: 5, bottom: 5 } };
-        //this.add.text(this.x, this.y+10, this.name, virusTextConfig).setOrigin(0,0);
         
     }
 
