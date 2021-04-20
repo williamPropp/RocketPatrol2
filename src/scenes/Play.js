@@ -6,10 +6,17 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
+        //Load all assets
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
+        this.load.image('sky', './assets/sky.png');
+        this.load.image('clouds', './assets/clouds.png');
+        this.load.image('hillFront', './assets/hillFront.png');
+        this.load.image('hillBack', './assets/hillBack.png');
         this.load.image('navBar', './assets/navBar.png');
+        this.load.image('hsWindow', './assets/highScoreWindow.png');
+        this.load.image('scoreWindow', './assets/scoreWindow.png');
         this.load.audio('sfx_click0', './assets/click0.wav');
         this.load.audio('sfx_click1', './assets/click1.wav');
         this.load.audio('sfx_click2', './assets/click2.wav');
@@ -26,27 +33,39 @@ class Play extends Phaser.Scene {
     }
 
     create() {
-        console.log(this.randomClick());
 
-        //Initialize gameOver state, score, and timer
+        //Initialize gameOver state and score
         this.gameOver = false;
         this.p1Score = 0;
+
+        //UI values
+        this.highScoreX = (game.config.width/2)+(3*borderUISize+borderPadding);
+        this.highScoreY = (borderUISize+borderPadding*2);
+        this.scoreX = (borderUISize+borderPadding);
+        this.scoreY = (borderUISize+borderPadding*2);
 
         //Create explosion animation
         this.anims.create({ key: 'explode', frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 11, first: 0}), frameRate: 25 });
 
-        this.add.tileSprite(0, 0, 640, 32, 'navBar').setOrigin(0, 0);
+        //Parallax bg
+        this.sky = this.add.tileSprite(0, 0, 700, 480, 'sky').setOrigin(0, 0);
+        this.clouds = this.add.tileSprite(0, 0, 700, 480, 'clouds').setOrigin(0, 0);
+        this.hillBack = this.add.tileSprite(0, 0, 700, 480, 'hillBack').setOrigin(0, 0);
+        this.hillFront = this.add.tileSprite(0, 0, 700, 480, 'hillFront').setOrigin(0, 0);
+        this.parallaxSpeed = 4;
 
-        //Starfield
-        //this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
+        //Create navBar, toolBar, and score windows
+        this.add.tileSprite(0, 0, 640, 32, 'navBar').setOrigin(0, 0);
+        this.add.tileSprite(this.highScoreX-10, this.highScoreY-5, 200, 46, 'hsWindow').setOrigin(0, 0);
+        this.add.tileSprite(this.scoreX-10, this.scoreY-5, 100, 46, 'scoreWindow').setOrigin(0, 0);
 
         //Create rocket and ships
         this.p1Rocket = new Rocket(this, game.config.width/2, 420, 'rocket').setOrigin(0.5, 0);
 
         //Generate ships
-        this.ship1 = new Ship(this, 100, 145, 'spaceship', 0, 1).setOrigin(0,0);
+        this.ship1 = new Ship(this, 100, 120, 'spaceship', 0, 1).setOrigin(0,0);
         this.ship2 = new Ship(this, 300, 200, 'spaceship', 0, 1).setOrigin(0,0);
-        this.ship3 = new Ship(this, 200, 260, 'spaceship', 0, 1).setOrigin(0,0);
+        this.ship3 = new Ship(this, 200, 280, 'spaceship', 0, 1).setOrigin(0,0);
 
         /*//Black UI background
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x111111).setOrigin(0, 0);*/
@@ -58,10 +77,9 @@ class Play extends Phaser.Scene {
 	    this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0x212121).setOrigin(0 ,0);*/
 
         //Display score
-        let scoreConfig = { fontFamily: 'Courier', fontSize: '28px', backgroundColor: '#153B00', color: '#8CFF00', align: 'right', padding: { top: 5, bottom: 5 }, fixedWidth: 100 };
-        let highScoreConfig = { fontFamily: 'Courier', fontSize: '28px', backgroundColor: '#153B00', color: '#8CFF00', align: 'right', padding: { top: 5, bottom: 5 } };
-        this.scoreLeft = this.add.text(borderUISize+borderPadding, borderUISize+borderPadding*2, this.p1Score, scoreConfig);
-        this.scoreRight = this.add.text((game.config.width/2)+(borderUISize+borderPadding), borderUISize+borderPadding*2, 'High Score: ' + highScore, highScoreConfig);
+        let scoreConfig = { fontFamily: 'Helvetica', fontSize: '28px', backgroundColor: '#FFFFFF00', color: '#000000', align: 'right', padding: { top: 5, bottom: 5 } };
+        this.scoreLeft = this.add.text(this.scoreX, this.scoreY, this.p1Score, scoreConfig);
+        this.scoreRight = this.add.text(this.highScoreX, this.highScoreY, 'High Score: ' + highScore, scoreConfig);
 
         //Define keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -80,8 +98,7 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-
-        //console.log('p1score='+this.p1Score);
+        
         
         if(this.p1Score > highScore) {
             highScore = this.p1Score;
@@ -91,7 +108,10 @@ class Play extends Phaser.Scene {
         //Play game, unless gameOver = true
         if(!this.gameOver) {
 
-            //this.starfield.tilePositionX -= 4;
+            this.clouds.tilePositionX -= (this.parallaxSpeed * 0.5);
+            this.hillBack.tilePositionX -= (this.parallaxSpeed * 0.75);
+            this.hillFront.tilePositionX -= this.parallaxSpeed;
+
             this.p1Rocket.update();
             this.ship1.update();
             this.ship2.update();

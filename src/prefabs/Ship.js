@@ -4,7 +4,7 @@ class Ship extends Phaser.GameObjects.Sprite {
         scene.add.existing(this);
         this.pointValue = pointValue;
         this.name = name;
-        this.virusTextConfig = { fontFamily: 'Courier', fontSize: '10px', backgroundColor: '#FFFFFF00', color: '#FFFFFF', align: 'CENTER', padding: { top: 5, bottom: 5 } };
+        this.virusTextConfig = { fontFamily: 'Courier', fontSize: '10px', backgroundColor: '#FFFFFF00', color: '#000000', align: 'CENTER', padding: { top: 5, bottom: 5 } };
         this.nameText = scene.add.text(this.x, this.y+45, this.genVirusName(), this.virusTextConfig);
     }
 
