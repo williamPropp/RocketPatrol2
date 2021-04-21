@@ -30,10 +30,10 @@ class Rocket extends Phaser.GameObjects.Sprite {
 
         if(this.isFiring) {
             this.y -= this.firingSpeed;
-            if(this.y < 108) {
+            if(this.y < 95) {
                 this.isPlayed = false
                 this.isFiring = false;
-                this.y = game.config.height - borderUISize - borderPadding;
+                this.y = shipResetY;
             }
 
         } else {
@@ -53,7 +53,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
     reset() {
 
         //Return rocket to start on reset
-        this.y = game.config.height - borderUISize - (2*borderPadding);
+        this.y = shipResetY;
         this.isFiring = false;
         this.isPlayed = false;
     }

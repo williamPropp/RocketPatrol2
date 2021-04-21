@@ -11,6 +11,7 @@ class Menu extends Phaser.Scene {
         this.load.image('sparkles2', './assets/sparkles2.png');
         this.load.image('sparkles3', './assets/sparkles3.png');
         this.load.image('pressF', './assets/pressF.png');
+        this.load.audio('music', './assets/music.wav');
     }
 
     randSparkle(sparkleSprite) {
@@ -24,6 +25,13 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
+
+        //Initialize and play sountrack
+        this.soundtrack = this.sound.add('music', {
+            volume: 0.3,
+            rate: 0.6,
+        });
+        this.soundtrack.play();
 
         //Initialize frame tracking variables
         this.frameCount = 0;
@@ -47,6 +55,7 @@ class Menu extends Phaser.Scene {
 
         //Start game when F is pressed
         if(this.keyF.isDown) {
+            this.soundtrack.stop();
             this.scene.start("playScene");
         }
 
