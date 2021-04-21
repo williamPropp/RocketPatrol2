@@ -9,7 +9,6 @@ class Play extends Phaser.Scene {
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('superVirus', './assets/superVirus.png');
-        this.load.image('starfield', './assets/starfield.png');
         this.load.image('sky', './assets/sky.png');
         this.load.image('clouds', './assets/clouds.png');
         this.load.image('hillFront', './assets/hillFront.png');
@@ -31,16 +30,23 @@ class Play extends Phaser.Scene {
     }
 
     randomClick() {
+        //play random explosion sfx (in this case, it's clicks)
         let clickArray = ['sfx_click0','sfx_click1','sfx_click2','sfx_click3','sfx_click4'];
         let clickIndex = Math.floor(Math.random() * 5);
         return clickArray[clickIndex];
     }
 
     gameOverGlitchy() {
+            //Create glitch effect by stacking gameover boxes on top of eachother in diagonal pattern
             this.xOffset += 5;
             this.yOffset += 5;
             this.add.tileSprite(this.xOffset-5, this.yOffset, 332, 200, 'gameOver').setOrigin(0, 0);
+
+            //Draw toolBar and navBar over glitch effetc
             this.add.tileSprite(0, 0, 640, 32, 'navBar').setOrigin(0, 0);
+            this.add.tileSprite(0, game.config.height-40, 640, 40, 'toolBar').setOrigin(0, 0);
+
+
             if(this.xOffset >= 640) {
                 this.xOffset = 0;
             }
@@ -132,7 +138,7 @@ class Play extends Phaser.Scene {
 
     update() {
         
-        
+        //If user surpasses highScore, make their score highScore and apply it to the HighScore box
         if(this.p1Score > highScore) {
             highScore = this.p1Score;
         }
@@ -149,13 +155,11 @@ class Play extends Phaser.Scene {
             this.speedUp = false;
         }
 
-        if(Phaser.Input.Keyboard.JustDown(keyS)) {
-            this.speedUp = true;
-        }
-
         //Play glitchy gameOver
         if(this.gameOver) {
+            //Slow soundtrack to playback rate of 0.2
             this.soundtrack.setRate(0.2);
+            
             this.glitchFrameCount++;
             if(this.glitchFrameCount % 2 == 0) {
                 this.gameOverGlitchy();
@@ -183,17 +187,6 @@ class Play extends Phaser.Scene {
             
         }
 
-        //Restart game when 'R' is pressed
-        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
-            this.soundtrack.stop();
-            this.scene.restart();
-        }
-        
-        //Press G to skip to gameOver
-        if(Phaser.Input.Keyboard.JustDown(keyG)) {
-            this.gameOver = true;
-        }
-
         //Rocket collision
         let r = this.p1Rocket;
         for(let s of [this.ship1, this.ship2, this.ship3, this.xXvirusXx]) {
@@ -201,18 +194,45 @@ class Play extends Phaser.Scene {
                r.x + r.width > s.x &&
                r.y < s.y + s.height &&
                r.y + r.height > s.y) {
+                   //Reset ship
                    r.reset();
                    this.destroyShip(s);
                }
         }
+
+        //Restart game when 'R' is pressed during gameOver screen
+        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
+            this.soundtrack.stop();
+            this.scene.restart();
+        }
+
+        //CHEAT CODES: S to speed up, G to skip to gameOver screen
+
+        //Press S to skip to fast speed
+        if(Phaser.Input.Keyboard.JustDown(keyS)) {
+            this.speedUp = true;
+        } 
+
+        //Press G to skip to gameOver
+        if(Phaser.Input.Keyboard.JustDown(keyG)) {
+            this.gameOver = true;
+        }
     }
 
     destroyShip(ship) {
+
+        //Play random click sound
         this.sound.play(this.randomClick());
+
+        //Make ship and text invisible
         ship.alpha = 0;
         ship.nameText.alpha = 0;
+
+        //Play explosion animation
         let boom = this.add.sprite(ship.x+40, ship.y+40, 'explosion');
         boom.anims.play('explode');
+
+        //After animation, reset ship
         boom.on('animationcomplete', () => {
             ship.reset();
             ship.alpha = 1;
@@ -220,6 +240,7 @@ class Play extends Phaser.Scene {
             boom.destroy();
         });
 
+        //Add pointValue of ship destroyed to score, and write it in the score box
         this.p1Score += ship.pointValue;
         this.scoreLeft.setText(this.p1Score);
 
