@@ -24,7 +24,7 @@ class Play extends Phaser.Scene {
         this.load.audio('sfx_click3', './assets/click3.wav');
         this.load.audio('sfx_click4', './assets/click4.wav');
         this.load.audio('chord', './assets/chord.wav');
-        this.load.audio('music', './assets/music.wav');
+        this.load.audio('music', './assets/music.mp3');
         this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 57, frameHeight: 80, startFrame: 0, endFrame: 11});
     }

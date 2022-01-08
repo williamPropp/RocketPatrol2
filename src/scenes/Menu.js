@@ -11,7 +11,7 @@ class Menu extends Phaser.Scene {
         this.load.image('sparkles2', './assets/sparkles2.png');
         this.load.image('sparkles3', './assets/sparkles3.png');
         this.load.image('pressF', './assets/pressF.png');
-        this.load.audio('music', './assets/music.wav');
+        this.load.audio('music', './assets/music.mp3');
     }
 
     randSparkle(sparkleSprite) {
